@@ -1,103 +1,149 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Invoice from '@/components/Invoice';
+import { generateRandomInvoice } from '@/utils/invoiceGenerator';
+import { InvoiceData } from '@/types/invoice';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [invoiceData, setInvoiceData] = useState<InvoiceData | null>(null);
+  const [email, setEmail] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleGenerateInvoice = () => {
+    // 清除之前的错误
+    setEmailError('');
+
+    // 验证邮箱
+    if (!email.trim()) {
+      setEmailError('请输入邮箱地址');
+      return;
+    }
+
+    if (!validateEmail(email.trim())) {
+      setEmailError('请输入有效的邮箱地址');
+      return;
+    }
+
+    const newInvoice = generateRandomInvoice(email.trim());
+    setInvoiceData(newInvoice);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {/* 控制面板 */}
+      <div className="bg-white shadow-sm border-b border-gray-200 p-4 print:hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">随机发票生成器</h1>
+              <p className="text-gray-600">基于Windsurf发票模板生成随机发票数据</p>
+            </div>
+            {invoiceData && (
+              <button
+                onClick={handlePrint}
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+              >
+                打印/保存PDF
+              </button>
+            )}
+          </div>
+
+          {/* 邮箱输入区域 */}
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+            <div className="flex-1 max-w-md">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                收票人邮箱地址 <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="请输入邮箱地址"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                  emailError ? 'border-red-500' : 'border-gray-300'
+                }`}
+              />
+              {emailError && (
+                <p className="mt-1 text-sm text-red-600">{emailError}</p>
+              )}
+            </div>
+            <button
+              onClick={handleGenerateInvoice}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
+            >
+              生成新发票
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* 发票显示区域 */}
+      <div className="py-2">
+        {invoiceData ? (
+          <Invoice data={invoiceData} />
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="text-center max-w-md">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">暂无发票</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                请在上方输入邮箱地址，然后点击&quot;生成新发票&quot;按钮开始创建随机发票
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 功能说明 */}
+      <div className="bg-white border-t border-gray-200 p-6 print:hidden">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">功能说明</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-medium text-gray-900 mb-2">随机数据生成</h3>
+              <p className="text-sm text-gray-600">
+                自动生成发票号码、收据号码、支付方式、收票人信息和账单日期
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-medium text-gray-900 mb-2">PDF导出</h3>
+              <p className="text-sm text-gray-600">
+                点击&quot;打印/保存PDF&quot;按钮可以将发票保存为PDF文件
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-medium text-gray-900 mb-2">原始样式</h3>
+              <p className="text-sm text-gray-600">
+                完全保持原始Windsurf发票模板的样式和布局
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
