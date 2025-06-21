@@ -28,9 +28,9 @@ export default function Invoice({ data }: InvoiceProps) {
           /* A4纸张尺寸 */
           width: 210mm;
           min-height: 297mm;
-
+          
           /* 在屏幕上居中显示并添加边距和阴影 */
-          margin: 1cm 0;
+          margin: 2cm 0;
           padding: 40px 50px;
           box-shadow: 0 0 1cm rgba(0,0,0,0.3);
           background-color: #ffffff;
@@ -38,7 +38,7 @@ export default function Invoice({ data }: InvoiceProps) {
           /* 关键：使用flexbox使页脚能固定在底部 */
           display: flex;
           flex-direction: column;
-
+          
           box-sizing: border-box;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           color: #000000;
@@ -239,46 +239,15 @@ export default function Invoice({ data }: InvoiceProps) {
           }
           .page {
             width: 100%;
-            height: 95vh;
-            max-height: 95vh;
+            min-height: 0;
             margin: 0;
-            padding: 0px 0px;
             box-shadow: none;
             border: none;
-            display: flex;
-            flex-direction: column;
-            page-break-after: avoid;
-            overflow: hidden;
-          }
-          .content-wrapper {
-            flex: 1 1 auto;
-            overflow: hidden;
+            padding: 0;
           }
           .footer {
-            flex: 0 0 auto;
-            margin-top: auto;
+          margin-top: 380px;
             page-break-inside: avoid;
-            page-break-before: avoid;
-          }
-
-          /* 调整各部分间距以适应单页 */
-          .header {
-            margin-bottom: 15px;
-          }
-          .invoice-meta-section {
-            margin-bottom: 15px;
-          }
-          .address-section {
-            margin-bottom: 15px;
-          }
-          .summary {
-            margin-bottom: 20px;
-          }
-          .items-table {
-            margin-bottom: 15px;
-          }
-          .totals-section {
-            margin-bottom: 15px;
           }
         }
       `}</style>
