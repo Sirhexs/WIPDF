@@ -45,8 +45,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">随机发票生成器</h1>
-              <p className="text-gray-600">基于Windsurf发票模板生成随机发票数据</p>
+              <h1 className="text-2xl font-bold text-gray-900">随机Invoice生成器</h1>
+              <p className="text-gray-600">基于Windsurf Invoice模板生成随机Invoice数据</p>
             </div>
             {invoiceData && (
               <button
@@ -82,13 +82,13 @@ export default function Home() {
               onClick={handleGenerateInvoice}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
             >
-              生成新发票
+              生成新Invoice
             </button>
           </div>
         </div>
       </div>
 
-      {/* 发票显示区域 */}
+      {/* Invoice显示区域 */}
       <div className="py-2">
         {invoiceData ? (
           <Invoice data={invoiceData} />
@@ -109,9 +109,9 @@ export default function Home() {
                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              <h3 className="mt-2 text-sm font-medium text-gray-900">暂无发票</h3>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">暂无Invoice</h3>
               <p className="mt-1 text-sm text-gray-500">
-                请在上方输入邮箱地址，然后点击&quot;生成新发票&quot;按钮开始创建随机发票
+                请在上方输入邮箱地址，然后点击&quot;生成新Invoice&quot;按钮开始创建随机Invoice
               </p>
             </div>
           </div>
@@ -126,19 +126,19 @@ export default function Home() {
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-medium text-gray-900 mb-2">随机数据生成</h3>
               <p className="text-sm text-gray-600">
-                自动生成发票号码、收据号码、支付方式、收票人信息和账单日期
+                自动生成Invoice号码、收据号码、支付方式、收票人信息和账单日期
               </p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-medium text-gray-900 mb-2">PDF导出</h3>
               <p className="text-sm text-gray-600">
-                点击&quot;打印/保存PDF&quot;按钮可以将发票保存为PDF文件
+                点击&quot;打印/保存PDF&quot;按钮可以将Invoice保存为PDF文件
               </p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-medium text-gray-900 mb-2">原始样式</h3>
               <p className="text-sm text-gray-600">
-                完全保持原始Windsurf发票模板的样式和布局
+                完全保持原始Windsurf Invoice模板的样式和布局
               </p>
             </div>
           </div>

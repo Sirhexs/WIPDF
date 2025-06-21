@@ -1,6 +1,6 @@
 import { InvoiceData, BillToInfo } from '@/types/invoice';
 
-// 随机生成发票号码 (格式: 8位字符-4位数字)
+// 随机生成Invoice号码 (格式: 8位字符-4位数字)
 function generateInvoiceNumber(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let result = '';
@@ -111,7 +111,7 @@ function generateDateRange(datePaid: string): string {
   return `${formatDate(startDate)} - ${formatDate(endDate)}, ${paidDate.getFullYear()}`;
 }
 
-// 主要的发票生成函数
+// 主要的Invoice生成函数
 export function generateRandomInvoice(email: string): InvoiceData {
   const invoiceNumber = generateInvoiceNumber();
   const receiptNumber = generateReceiptNumber();
