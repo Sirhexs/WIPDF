@@ -20,19 +20,10 @@ function generateReceiptNumber(): string {
 
 // 随机生成支付方式
 function generatePaymentMethod(): string {
-  const methods = [
-    'American Express - 1116',
-    'Visa - 4532',
-    'MasterCard - 5678',
-    'American Express - 3456',
-    'Visa - 4123',
-    'MasterCard - 5432',
-    'Discover - 6011',
-    'American Express - 3789',
-    'Visa - 4987',
-    'MasterCard - 5123'
-  ];
-  return methods[Math.floor(Math.random() * methods.length)];
+  const cardTypes = ['Visa', 'MasterCard', 'American Express', 'Discover'];
+  const randomCardType = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+  const lastFourDigits = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  return `${randomCardType} - ${lastFourDigits}`;
 }
 
 // 随机生成日期 (2025年4月17日至2025年6月16日)
@@ -55,32 +46,69 @@ function generateBillToInfo(email: string): BillToInfo {
   const names = [
     'ZHANG WEI', 'WANG MING', 'LI XIAOLI', 'CHEN ZHANGQI', 'ZHAO YIFAN',
     'JOHN SMITH', 'JANE DOE', 'MICHAEL BROWN', 'SARAH WILSON', 'DAVID JONES',
-    'MARIA GARCIA', 'ROBERT TAYLOR', 'JENNIFER DAVIS', 'WILLIAM MILLER', 'ELIZABETH MOORE'
+    'MARIA GARCIA', 'ROBERT TAYLOR', 'JENNIFER DAVIS', 'WILLIAM MILLER', 'ELIZABETH MOORE',
+    'LIU YANG', 'HUANG LEI', 'WU JING', 'ZHOU MING', 'XU FANG',
+    'CHRISTOPHER JOHNSON', 'AMANDA ANDERSON', 'MATTHEW THOMAS', 'JESSICA JACKSON', 'ANDREW WHITE',
+    'LISA HARRIS', 'DANIEL MARTIN', 'MICHELLE THOMPSON', 'KEVIN GARCIA', 'STEPHANIE MARTINEZ',
+    'YAMADA TARO', 'SUZUKI HANAKO', 'TANAKA ICHIRO', 'WATANABE YUKI', 'SATO AKIRA',
+    'PIERRE MARTIN', 'MARIE DUBOIS', 'JEAN BERNARD', 'SOPHIE MOREAU', 'NICOLAS PETIT',
+    'HANS MUELLER', 'ANNA SCHMIDT', 'PETER WEBER', 'MARIA WAGNER', 'THOMAS BECKER'
   ];
 
   const addresses1 = [
     '100000', '200000', '300000', '400000', '500000',
-    '123 Main Street', '456 Oak Avenue', '789 Pine Road', '321 Elm Street', '654 Maple Drive'
+    '123 Main Street', '456 Oak Avenue', '789 Pine Road', '321 Elm Street', '654 Maple Drive',
+    '600000', '700000', '800000', '900000', '110000',
+    '987 Broadway', '246 Fifth Avenue', '135 Park Avenue', '579 Wall Street', '864 Madison Avenue',
+    '111 First Street', '222 Second Avenue', '333 Third Boulevard', '444 Fourth Lane', '555 Fifth Circle',
+    '12 Downing Street', '34 Baker Street', '56 Oxford Street', '78 Regent Street', '90 Bond Street',
+    '15 Champs-Élysées', '27 Rue de Rivoli', '39 Boulevard Saint-Germain', '51 Rue du Faubourg', '63 Avenue Montaigne'
   ];
 
   const addresses2 = [
     '北京市北京', '上海市上海', '广州市广东', '深圳市广东', '杭州市浙江',
-    'New York, NY', 'Los Angeles, CA', 'Chicago, IL', 'Houston, TX', 'Phoenix, AZ'
+    'New York, NY', 'Los Angeles, CA', 'Chicago, IL', 'Houston, TX', 'Phoenix, AZ',
+    '成都市四川', '武汉市湖北', '南京市江苏', '天津市天津', '重庆市重庆',
+    'Miami, FL', 'Seattle, WA', 'Boston, MA', 'Denver, CO', 'Atlanta, GA',
+    'Toronto, ON', 'Vancouver, BC', 'Montreal, QC', 'Calgary, AB', 'Ottawa, ON',
+    'London, England', 'Manchester, England', 'Birmingham, England', 'Liverpool, England', 'Leeds, England',
+    'Tokyo, Japan', 'Osaka, Japan', 'Kyoto, Japan', 'Yokohama, Japan', 'Nagoya, Japan',
+    'Paris, France', 'Lyon, France', 'Marseille, France', 'Toulouse, France', 'Nice, France',
+    'Berlin, Germany', 'Munich, Germany', 'Hamburg, Germany', 'Cologne, Germany', 'Frankfurt, Germany'
   ];
 
   const cities = [
     '通州玉桥', '浦东新区', '天河区', '南山区', '西湖区',
-    'Manhattan', 'Hollywood', 'Downtown', 'Midtown', 'Uptown'
+    'Manhattan', 'Hollywood', 'Downtown', 'Midtown', 'Uptown',
+    '朝阳区', '海淀区', '丰台区', '石景山区', '东城区',
+    'Brooklyn', 'Queens', 'Bronx', 'Staten Island', 'Long Island',
+    'Scarborough', 'North York', 'Etobicoke', 'York', 'East York',
+    'Westminster', 'Camden', 'Islington', 'Hackney', 'Tower Hamlets',
+    'Shibuya', 'Shinjuku', 'Harajuku', 'Ginza', 'Akihabara',
+    'Montmartre', 'Marais', 'Saint-Germain', 'Champs-Élysées', 'Louvre',
+    'Mitte', 'Kreuzberg', 'Prenzlauer Berg', 'Charlottenburg', 'Friedrichshain'
   ];
 
   const states = [
     '北京', '上海', '广东', '浙江', '江苏',
-    'New York', 'California', 'Illinois', 'Texas', 'Arizona'
+    'New York', 'California', 'Illinois', 'Texas', 'Arizona',
+    '四川', '湖北', '天津', '重庆', '福建',
+    'Florida', 'Washington', 'Massachusetts', 'Colorado', 'Georgia',
+    'Ontario', 'British Columbia', 'Quebec', 'Alberta', 'Manitoba',
+    'England', 'Scotland', 'Wales', 'Northern Ireland', 'Cornwall',
+    'Tokyo', 'Osaka', 'Kyoto', 'Kanagawa', 'Aichi',
+    'Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Auvergne-Rhône-Alpes', 'Occitanie', 'Nouvelle-Aquitaine',
+    'Bavaria', 'North Rhine-Westphalia', 'Baden-Württemberg', 'Lower Saxony', 'Hesse'
   ];
 
   const countries = [
     'China', 'United States', 'Canada', 'United Kingdom', 'Australia',
-    'Germany', 'France', 'Japan', 'South Korea', 'Singapore'
+    'Germany', 'France', 'Japan', 'South Korea', 'Singapore',
+    'Netherlands', 'Sweden', 'Norway', 'Denmark', 'Finland',
+    'Switzerland', 'Austria', 'Belgium', 'Italy', 'Spain',
+    'Brazil', 'Mexico', 'Argentina', 'Chile', 'Colombia',
+    'India', 'Thailand', 'Malaysia', 'Indonesia', 'Philippines',
+    'New Zealand', 'Ireland', 'Portugal', 'Greece', 'Poland'
   ];
 
   return {
