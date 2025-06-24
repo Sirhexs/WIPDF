@@ -1,14 +1,15 @@
 # WIPDF
 
-基于Windsurf Invoice模板的随机Invoice生成Web应用程序，可以生成随机的Invoice数据并支持PDF导出。
+支持 Windsurf 和 Cursor Invoice模板的随机Invoice生成Web应用程序，可以生成随机的Invoice数据并支持PDF导出。
 
 ## 功能特性
 
 - 🎲 **随机数据生成**: 自动生成Invoice号码、收据号码、支付方式、收票人信息和账单日期
 - 📄 **PDF导出**: 支持将生成的Invoice保存为PDF文件
-- 🎨 **原始样式**: 完全保持原始Windsurf Invoice模板的样式和布局
+- 🎨 **多种模板**: 支持 Windsurf 和 Cursor 两种Invoice模板，完全保持原始样式和布局
 - 📱 **响应式设计**: 适配不同屏幕尺寸的设备
 - ⚡ **快速部署**: 支持一键部署到Vercel
+- 🔄 **类型切换**: 可以在界面上轻松切换不同的Invoice类型
 
 ## 随机生成的数据字段
 
@@ -87,10 +88,13 @@ npm start
 
 ### 生成新Invoice
 
-1. 在页面顶部的邮箱输入框中输入收票人的邮箱地址（必填）
-2. 点击"生成新Invoice"按钮
-3. 系统会自动生成包含随机数据和指定邮箱的新Invoice
-4. Invoice会立即显示在页面中
+1. **选择Invoice类型**: 在页面顶部选择要生成的Invoice类型
+   - **Windsurf Invoice**: 金额为 $6.90 的 Windsurf Pro 订阅
+   - **Cursor Invoice**: 金额为 $20.00 的 Cursor Pro 订阅
+2. 在邮箱输入框中输入收票人的邮箱地址（必填）
+3. 点击"生成新Invoice"按钮
+4. 系统会自动生成包含随机数据和指定邮箱的新Invoice
+5. Invoice会立即显示在页面中，样式会根据选择的类型自动调整
 
 **注意**: 邮箱地址为必填字段，如果未输入或格式不正确，系统会显示错误提示并阻止Invoice生成。
 
@@ -111,13 +115,15 @@ WIPDF/
 │   │   ├── layout.tsx        # 布局组件
 │   │   └── globals.css       # 全局样式
 │   ├── components/
-│   │   └── Invoice.tsx       # Invoice组件
+│   │   ├── WindsurfInvoice.tsx  # Windsurf发票组件
+│   │   └── CursorInvoice.tsx    # Cursor发票组件
 │   ├── types/
 │   │   └── invoice.ts        # 类型定义
 │   └── utils/
 │       └── invoiceGenerator.ts # Invoice数据生成器
 ├── public/
-│   └── logo.png              # Windsurf Logo
+│   ├── windsurf-logo.png     # Windsurf Logo
+│   └── cursor-logo.png       # Cursor Logo
 ├── package.json
 ├── next.config.js
 ├── vercel.json
@@ -158,13 +164,21 @@ function generatePaymentMethod(): string {
 
 ### 修改Invoice金额
 
-在 `src/utils/invoiceGenerator.ts` 中修改 `generateRandomInvoice` 函数：
+在 `src/utils/invoiceGenerator.ts` 中修改 `generateProductInfo` 函数：
 
 ```typescript
-export function generateRandomInvoice(): InvoiceData {
-  // ...
-  const amount = '$9.90'; // 修改金额
-  // ...
+function generateProductInfo(type: InvoiceType): { amount: string; description: string } {
+  if (type === InvoiceType.WINDSURF) {
+    return {
+      amount: '$9.90', // 修改 Windsurf 金额
+      description: 'Windsurf Pro'
+    };
+  } else {
+    return {
+      amount: '$25.00', // 修改 Cursor 金额
+      description: 'Cursor Pro'
+    };
+  }
 }
 ```
 

@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import Invoice from '@/components/Invoice';
+import WindsurfInvoice from '@/components/WindsurfInvoice';
+import CursorInvoice from '@/components/CursorInvoice';
 import { generateRandomInvoice } from '@/utils/invoiceGenerator';
-import { InvoiceData } from '@/types/invoice';
+import { InvoiceData, InvoiceType } from '@/types/invoice';
 
 export default function Home() {
   const [invoiceData, setInvoiceData] = useState<InvoiceData | null>(null);
   const [email, setEmail] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
+  const [invoiceType, setInvoiceType] = useState<InvoiceType>(InvoiceType.WINDSURF);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,7 +32,7 @@ export default function Home() {
       return;
     }
 
-    const newInvoice = generateRandomInvoice(email.trim());
+    const newInvoice = generateRandomInvoice(email.trim(), invoiceType);
     setInvoiceData(newInvoice);
   };
 
@@ -46,7 +48,7 @@ export default function Home() {
           <div className="flex justify-between items-start mb-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">随机Invoice生成器</h1>
-              <p className="text-gray-600">基于Windsurf Invoice模板生成随机Invoice数据</p>
+              <p className="text-gray-600">支持生成 Windsurf 和 Cursor Invoice模板的随机Invoice数据</p>
             </div>
             {invoiceData && (
               <button
@@ -56,6 +58,37 @@ export default function Home() {
                 打印/保存PDF
               </button>
             )}
+          </div>
+
+          {/* Invoice类型选择器 */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Invoice类型
+            </label>
+            <div className="flex gap-6">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="invoiceType"
+                  value={InvoiceType.WINDSURF}
+                  checked={invoiceType === InvoiceType.WINDSURF}
+                  onChange={(e) => setInvoiceType(e.target.value as InvoiceType)}
+                  className="mr-2 text-blue-600"
+                />
+                <span className="text-sm text-gray-700">Windsurf Invoice ($6.90)</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="invoiceType"
+                  value={InvoiceType.CURSOR}
+                  checked={invoiceType === InvoiceType.CURSOR}
+                  onChange={(e) => setInvoiceType(e.target.value as InvoiceType)}
+                  className="mr-2 text-blue-600"
+                />
+                <span className="text-sm text-gray-700">Cursor Invoice ($20.00)</span>
+              </label>
+            </div>
           </div>
 
           {/* 邮箱输入区域 */}
@@ -91,7 +124,11 @@ export default function Home() {
       {/* Invoice显示区域 */}
       <div className="py-2">
         {invoiceData ? (
-          <Invoice data={invoiceData} />
+          invoiceData.type === InvoiceType.CURSOR ? (
+            <CursorInvoice data={invoiceData} />
+          ) : (
+            <WindsurfInvoice data={invoiceData} />
+          )
         ) : (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="text-center max-w-md">
@@ -136,9 +173,9 @@ export default function Home() {
               </p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-medium text-gray-900 mb-2">原始样式</h3>
+              <h3 className="font-medium text-gray-900 mb-2">多种模板</h3>
               <p className="text-sm text-gray-600">
-                完全保持原始Windsurf Invoice模板的样式和布局
+                支持 Windsurf 和 Cursor 两种Invoice模板，完全保持原始样式和布局
               </p>
             </div>
           </div>

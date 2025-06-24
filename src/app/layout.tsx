@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "WIPDF",
-  description: "基于Windsurf Invoice模板的随机Invoice生成Web应用程序，可以生成随机的Invoice数据并支持PDF导出。",
+  description: "支持 Windsurf 和 Cursor Invoice模板的随机Invoice生成Web应用程序，可以生成随机的Invoice数据并支持PDF导出。",
 };
 
 export default function RootLayout({

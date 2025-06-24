@@ -1,4 +1,4 @@
-import { InvoiceData, BillToInfo } from '@/types/invoice';
+import { InvoiceData, BillToInfo, InvoiceType, CompanyInfo } from '@/types/invoice';
 
 // 随机生成Invoice号码 (格式: 8位字符-4位数字)
 function generateInvoiceNumber(): string {
@@ -111,25 +111,70 @@ function generateDateRange(datePaid: string): string {
   return `${formatDate(startDate)} - ${formatDate(endDate)}, ${paidDate.getFullYear()}`;
 }
 
+// 生成公司信息
+function generateCompanyInfo(type: InvoiceType): CompanyInfo {
+  if (type === InvoiceType.WINDSURF) {
+    return {
+      name: 'Windsurf',
+      address1: '900 Villa Street',
+      address2: 'Mountain View, California 94041',
+      city: 'Mountain View',
+      state: 'California',
+      country: 'United States',
+      email: 'noreply@windsurf.com',
+      taxInfo: 'EU OSS VAT EU372077851'
+    };
+  } else {
+    return {
+      name: 'Cursor',
+      address1: '801 West End Avenue',
+      address2: 'New York, New York 10025',
+      city: 'New York',
+      state: 'New York',
+      country: 'United States',
+      phone: '+1 831-425-9504',
+      email: 'hi@cursor.com',
+      taxInfo: 'Anysphere, Inc.\nUS EIN 87-4436547'
+    };
+  }
+}
+
+// 根据发票类型生成产品信息
+function generateProductInfo(type: InvoiceType): { amount: string; description: string } {
+  if (type === InvoiceType.WINDSURF) {
+    return {
+      amount: '$6.90',
+      description: 'Windsurf Pro'
+    };
+  } else {
+    return {
+      amount: '$20.00',
+      description: 'Cursor Pro'
+    };
+  }
+}
+
 // 主要的Invoice生成函数
-export function generateRandomInvoice(email: string): InvoiceData {
+export function generateRandomInvoice(email: string, type: InvoiceType = InvoiceType.WINDSURF): InvoiceData {
   const invoiceNumber = generateInvoiceNumber();
   const receiptNumber = generateReceiptNumber();
   const datePaid = generateRandomDate();
   const paymentMethod = generatePaymentMethod();
   const billTo = generateBillToInfo(email);
-  const amount = '$6.90';
-  const description = 'Windsurf Pro';
+  const productInfo = generateProductInfo(type);
+  const companyInfo = generateCompanyInfo(type);
   const dateRange = generateDateRange(datePaid);
 
   return {
+    type,
     invoiceNumber,
     receiptNumber,
     datePaid,
     paymentMethod,
     billTo,
-    amount,
-    description,
-    dateRange
+    amount: productInfo.amount,
+    description: productInfo.description,
+    dateRange,
+    companyInfo
   };
 }

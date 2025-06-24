@@ -2,11 +2,11 @@
 
 import { InvoiceData } from '@/types/invoice';
 
-interface InvoiceProps {
+interface CursorInvoiceProps {
   data: InvoiceData;
 }
 
-export default function Invoice({ data }: InvoiceProps) {
+export default function CursorInvoice({ data }: CursorInvoiceProps) {
   return (
     <div className="invoice-container">
       <style jsx>{`
@@ -28,17 +28,17 @@ export default function Invoice({ data }: InvoiceProps) {
           /* A4纸张尺寸 */
           width: 210mm;
           min-height: 297mm;
-          
+
           /* 在屏幕上居中显示并添加边距和阴影 */
           margin: 2cm 0;
           padding: 40px 50px;
-          box-shadow: 0 0 1cm rgba(0,0,0,0.3);
+          box-shadow: 0 0 1cm rgba(0, 0, 0, 0.3);
           background-color: #ffffff;
 
           /* 关键：使用flexbox使页脚能固定在底部 */
           display: flex;
           flex-direction: column;
-          
+
           box-sizing: border-box;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           color: #000000;
@@ -69,12 +69,7 @@ export default function Invoice({ data }: InvoiceProps) {
 
         .logo img {
           width: auto;
-          height: 80px;
-        }
-
-        .logo-text {
-          font-size: 28px;
-          font-weight: 700;
+          height: 64px;
         }
 
         .invoice-meta-section {
@@ -96,12 +91,12 @@ export default function Invoice({ data }: InvoiceProps) {
         .invoice-info td:first-child {
           color: #000000;
           padding-right: 20px;
-          font-weight: 400; /* Regular weight */
+          font-weight: 400;
         }
-        
+
         /* 值样式 (e.g., "70C68990-0002") */
         .invoice-info td:last-child {
-          font-weight: 500; /* Medium weight, slightly heavier than regular */
+          font-weight: 500;
         }
 
         .address-section {
@@ -111,32 +106,35 @@ export default function Invoice({ data }: InvoiceProps) {
           margin-bottom: 20px;
           font-size: 13px;
         }
-        
+
         .address p {
           margin: 0;
           line-height: 1.6;
-        }
-        
-        .address-title {
-          font-weight: 500;
         }
 
         .summary {
           margin-bottom: 40px;
         }
-        
+
         .summary h2 {
           font-size: 16px;
           font-weight: 700;
           margin: 0;
         }
-        
+
+        .firms-description {
+          margin: 0;
+          font-size: 13px;
+          margin-top: 20px;
+          white-space: pre-line;
+        }
+
         .items-table {
           width: 100%;
           border-collapse: collapse;
           font-size: 13px;
         }
-        
+
         .items-table thead th {
           text-align: right;
           border-bottom: 1px solid #9ca3af;
@@ -145,22 +143,22 @@ export default function Invoice({ data }: InvoiceProps) {
           color: #000000;
           font-size: 12px;
         }
-        
+
         .items-table thead th:first-child {
           text-align: left;
         }
-        
+
         .items-table tbody td {
           padding: 8px 0;
           border-bottom: none;
           text-align: right;
           vertical-align: top;
         }
-        
+
         .items-table tbody td:first-child {
           text-align: left;
         }
-        
+
         .items-table th:nth-child(2),
         .items-table td:nth-child(2) {
           width: 15%;
@@ -170,11 +168,12 @@ export default function Invoice({ data }: InvoiceProps) {
         .items-table td:nth-child(3) {
           width: 15%;
         }
+
         .items-table th:nth-child(4),
         .items-table td:nth-child(4) {
           width: 13%;
         }
-        
+
         .item-description {
           color: #000000;
         }
@@ -183,23 +182,17 @@ export default function Invoice({ data }: InvoiceProps) {
           font-size: 12px;
           margin-top: 2px;
         }
-        
-        .totals-divider {
-          border: none;
-          border-top: 1px solid #e5e7eb;
-          margin: 0 0 20px 0;
-        }
-        
+
         .totals-section {
           display: flex;
           justify-content: flex-end;
         }
-        
+
         .totals-table {
           width: 350px;
           font-size: 13px;
         }
-        
+
         .totals-table tr {
           border-top: 1px solid #e5e7eb;
         }
@@ -212,7 +205,7 @@ export default function Invoice({ data }: InvoiceProps) {
           text-align: right;
           font-weight: 500;
         }
-        
+
         .totals-table tr td {
           border-top: 1px solid #e5e7eb;
         }
@@ -220,7 +213,7 @@ export default function Invoice({ data }: InvoiceProps) {
         .totals-table tr:last-child td {
           font-weight: 700;
         }
-        
+
         .footer {
           margin-top: auto;
           padding-top: 15px;
@@ -234,9 +227,8 @@ export default function Invoice({ data }: InvoiceProps) {
         @media print {
           .invoice-container {
             background-color: #ffffff;
-            margin: 0;
-            padding: 0;
           }
+
           .page {
             width: 100%;
             min-height: 0;
@@ -245,8 +237,9 @@ export default function Invoice({ data }: InvoiceProps) {
             border: none;
             padding: 0;
           }
+
           .footer {
-          margin-top: 380px;
+            margin-top: 340px;
             page-break-inside: avoid;
           }
         }
@@ -257,7 +250,7 @@ export default function Invoice({ data }: InvoiceProps) {
           <div className="header">
             <h1>Receipt</h1>
             <div className="logo">
-              <img src="/logo.png" alt="Windsurf Logo" />
+              <img src="/cursor-logo.png" alt="Cursor Logo" />
             </div>
           </div>
 
@@ -285,15 +278,15 @@ export default function Invoice({ data }: InvoiceProps) {
               </table>
             </div>
           </div>
-          
+
           <div className="address-section">
             <div className="address">
-              <p><b>Windsurf</b></p>
-              <p>900 Villa Street</p>
-              <p>Mountain View, California 94041</p>
-              <p>United States</p>
-              <p>noreply@windsurf.com</p>
-              <p>EU OSS VAT EU372077851</p>
+              <p><b>{data.companyInfo.name}</b></p>
+              <p>{data.companyInfo.address1}</p>
+              <p>{data.companyInfo.address2}</p>
+              <p>{data.companyInfo.country}</p>
+              {data.companyInfo.phone && <p>{data.companyInfo.phone}</p>}
+              {data.companyInfo.email && <p>{data.companyInfo.email}</p>}
             </div>
             <div className="address">
               <p><b>Bill to</b></p>
@@ -351,10 +344,16 @@ export default function Invoice({ data }: InvoiceProps) {
               </tbody>
             </table>
           </div>
+
+          {data.companyInfo.taxInfo && (
+            <div className="firms-description">
+              <p>{data.companyInfo.taxInfo}</p>
+            </div>
+          )}
         </div>
 
         <div className="footer">
-          <span>{data.receiptNumber} - {data.amount} paid on {data.datePaid}</span>
+          <span>{data.receiptNumber} · {data.amount} paid on {data.datePaid}</span>
           <span>Page 1 of 1</span>
         </div>
       </div>
