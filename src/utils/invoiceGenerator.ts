@@ -1,14 +1,14 @@
 import { InvoiceData, BillToInfo, InvoiceType, CompanyInfo } from '@/types/invoice';
 
-// 随机生成Invoice号码 (格式: 8位字符-4位数字)
+// 随机生成Invoice号码 (格式: 8位十六进制数字-000+1位随机数字)
 function generateInvoiceNumber(): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
+  const hexChars = '0123456789ABCDEF';
+  let hexResult = '';
   for (let i = 0; i < 8; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    hexResult += hexChars.charAt(Math.floor(Math.random() * hexChars.length));
   }
-  const numbers = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-  return `${result}-${numbers}`;
+  const lastDigit = Math.floor(Math.random() * 10);
+  return `${hexResult}-000${lastDigit}`;
 }
 
 // 随机生成收据号码 (格式: 4位数字-4位数字)
