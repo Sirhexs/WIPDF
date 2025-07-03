@@ -68,8 +68,8 @@ export default function WindsurfInvoice({ data }: WindsurfInvoiceProps) {
         }
 
         .logo img {
-          width: auto;
-          height: 80px;
+          width: 200px;
+          height: auto;
         }
 
         .logo-text {
